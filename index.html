@@ -2,56 +2,214 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="نكران">
-    <link rel="apple-touch-icon" href="Logo.png">
-    <title>تطبيق نكران</title>
-
+    <link rel="apple-touch-icon" href="1000394637.png">
+    <title>نكران</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --brand-green: #1a6b23;
+            --brand-yellow: #fce273;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
         body {
             font-family: 'Cairo', sans-serif;
+            background-color: var(--brand-green);
             margin: 0;
-            background: #1a6b23;
+            padding: 0;
             color: white;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+        }
+        @keyframes splash-fade {
+            0% { opacity: 1; pointer-events: auto; }
+            80% { opacity: 1; }
+            100% { opacity: 0; pointer-events: none; }
+        }
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: var(--brand-green);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: splash-fade 2.5s forwards ease-in-out;
+        }
+        .apple-click:active {
+            transform: scale(0.94);
+            transition: transform 0.1s ease;
+        }
+        .player-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+            border-radius: 40px;
         }
     </style>
 </head>
+<body>
 
-<body class="text-center">
-
-    <!-- Splash -->
-    <div id="splash" style="padding:40px;">
-        <img src="Logo.png" style="width:200px;">
-        <h2 style="margin-top:20px;">نـكـران</h2>
+    <!-- شاشة الترحيب (Splash Screen) -->
+    <div id="splash-screen">
+        <img src="1000394637.png" alt="نكران" class="w-40 h-40 object-contain animate-pulse">
+        <div class="mt-4 text-lg font-bold tracking-[0.2em] opacity-60">نـكـران</div>
     </div>
 
-    <!-- Player -->
-    <div style="margin-top:40px;">
-        <img src="Logo.png" style="width:150px;">
-        <h3 style="margin-top:20px;">المقطع الصوتي</h3>
+    <!-- واجهة التطبيق -->
+    <div class="h-screen w-screen flex flex-col bg-gradient-to-b from-[#1a6b23] to-[#0d3311] relative">
+        
+        <!-- الهيدر العلوي -->
+        <header class="pt-14 pb-4 px-6 flex items-center justify-between glass sticky top-0 z-40 rounded-b-[30px] shadow-xl">
+            <!-- اليمين: اللقو -->
+            <div class="w-11 h-11 rounded-2xl overflow-hidden border border-white/20 bg-white/5">
+                <img src="1000394637.png" alt="Logo" class="w-full h-full object-contain">
+            </div>
 
-        <button onclick="togglePlay()" style="margin-top:20px; padding:15px 25px; background:#fce273; color:#1a6b23; border:none; border-radius:20px;">
-            تشغيل / إيقاف
-        </button>
+            <!-- المنتصف: البحث -->
+            <div class="flex-1 mx-4 relative">
+                <input type="text" placeholder="ابحث هنا..." class="w-full bg-white/10 border border-white/10 rounded-2xl py-2 px-4 pr-10 outline-none text-xs text-right placeholder:text-white/30 backdrop-blur-md">
+                <span class="absolute right-3 top-2.5 opacity-30 text-sm">🔍</span>
+            </div>
 
-        <audio id="audio" src=""></audio>
+            <!-- اليسار: زر الحساب -->
+            <button onclick="openPage('إعدادات الحساب')" class="w-11 h-11 glass rounded-2xl flex items-center justify-center apple-click">
+                <div class="bg-[#fce273] w-8 h-8 rounded-xl flex items-center justify-center shadow-inner">
+                    <span class="text-[#1a6b23] text-sm">👤</span>
+                </div>
+            </button>
+        </header>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="flex-1 flex flex-col items-center justify-center p-6 pb-24">
+            
+            <!-- مشغل الصوت المطوّر -->
+            <div class="w-full max-w-sm player-card glass p-6 shadow-2xl border border-white/10">
+                <div class="flex flex-col items-center gap-6">
+                    <!-- الصورة المصغرة -->
+                    <div class="w-44 h-44 rounded-[32px] overflow-hidden border border-white/20 shadow-2xl bg-black/20">
+                        <img src="1000394637.png" alt="Thumbnail" class="w-full h-full object-contain p-2">
+                    </div>
+
+                    <div class="flex flex-col items-center w-full gap-4">
+                        <!-- معلومات المقطع -->
+                        <div class="text-center">
+                            <h2 class="text-xl font-extrabold text-[#fce273] mb-1">المقطع الصوتي المرفق</h2>
+                            <p id="audio-status" class="text-[10px] uppercase tracking-[0.2em] opacity-40">جاهز للاستماع</p>
+                        </div>
+
+                        <!-- التحكم: زر التشغيل يتوسط الصورة والنص في التصميم -->
+                        <button id="play-btn" onclick="toggleAudio()" class="w-20 h-20 rounded-full bg-[#fce273] flex items-center justify-center shadow-[0_15px_35px_rgba(252,226,115,0.3)] apple-click">
+                            <span id="play-icon" class="text-[#1a6b23] text-3xl ml-1">▶</span>
+                        </button>
+
+                        <!-- شريط التقدم -->
+                        <div class="w-full px-2 mt-2">
+                            <div class="h-1 bg-white/10 rounded-full w-full overflow-hidden">
+                                <div id="progress-bar" class="h-full bg-[#fce273] w-0 transition-all duration-200"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- الملف الصوتي الذي أرسلته -->
+                <audio id="main-audio" src="http://googleusercontent.com/file_content/0"></audio>
+            </div>
+        </main>
+
+        <!-- نافبار سفلي -->
+        <footer class="fixed bottom-10 left-0 right-0 px-8">
+            <div class="max-w-xs mx-auto glass rounded-[35px] p-2 flex items-center justify-between shadow-2xl">
+                <button onclick="openPage('أذكار الصباح والمساء')" class="flex-1 flex flex-col items-center py-4 rounded-3xl apple-click transition-colors hover:bg-white/5">
+                    <span class="text-2xl mb-1">🌙</span>
+                    <span class="text-[9px] font-bold tracking-wider opacity-60">الأذكار</span>
+                </button>
+                <div class="w-[1px] h-10 bg-white/10"></div>
+                <button onclick="openPage('المجتمع')" class="flex-1 flex flex-col items-center py-4 rounded-3xl apple-click transition-colors hover:bg-white/5">
+                    <span class="text-2xl mb-1">👥</span>
+                    <span class="text-[9px] font-bold tracking-wider opacity-60">المجتمع</span>
+                </button>
+            </div>
+        </footer>
+
+        <!-- صفحة التنبيه المنبثقة -->
+        <div id="modal" class="fixed inset-0 z-[110] hidden items-center justify-center p-8 bg-[#1a6b23]/90 backdrop-blur-3xl">
+            <div class="glass p-12 rounded-[50px] shadow-2xl max-w-sm w-full text-center border border-white/20">
+                <div class="w-20 h-20 bg-[#fce273]/10 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
+                    <span class="text-[#fce273] text-4xl font-light">!</span>
+                </div>
+                <h2 id="modal-title" class="text-2xl font-bold text-[#fce273] mb-4"></h2>
+                <p class="text-white/70 text-lg mb-10 leading-relaxed">سوف يظهر قريباً</p>
+                <button onclick="closePage()" class="w-full bg-[#fce273] text-[#1a6b23] font-extrabold py-5 rounded-[25px] apple-click shadow-lg text-lg">
+                    حسناً
+                </button>
+            </div>
+        </div>
+
     </div>
 
-<script>
-const audio = document.getElementById('audio');
+    <script>
+        const audio = document.getElementById('main-audio');
+        const playIcon = document.getElementById('play-icon');
+        const progressBar = document.getElementById('progress-bar');
+        const statusText = document.getElementById('audio-status');
 
-function togglePlay(){
-    if(audio.paused){
-        audio.play();
-    } else {
-        audio.pause();
-    }
-}
-</script>
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                playIcon.innerText = '⏸';
+                playIcon.classList.remove('ml-1');
+                statusText.innerText = 'جاري التشغيل...';
+                statusText.classList.add('text-[#fce273]');
+            } else {
+                audio.pause();
+                playIcon.innerText = '▶';
+                playIcon.classList.add('ml-1');
+                statusText.innerText = 'تم الإيقاف مؤقتاً';
+                statusText.classList.remove('text-[#fce273]');
+            }
+        }
 
+        audio.ontimeupdate = () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = progress + '%';
+        };
+
+        audio.onended = () => {
+            playIcon.innerText = '▶';
+            playIcon.classList.add('ml-1');
+            progressBar.style.width = '0%';
+            statusText.innerText = 'انتهى المقطع';
+        };
+
+        function openPage(title) {
+            document.getElementById('modal-title').innerText = title;
+            const modal = document.getElementById('modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePage() {
+            const modal = document.getElementById('modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // تحسين تجربة اللمس على iOS
+        document.addEventListener('touchmove', (e) => {
+            if (e.scale !== 1) e.preventDefault();
+        }, { passive: false });
+    </script>
 </body>
 </html>
+
